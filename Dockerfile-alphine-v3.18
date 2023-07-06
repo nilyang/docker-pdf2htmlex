@@ -1,0 +1,27 @@
+FROM nilyang/pdf2htmlex:latest
+
+RUN \
+    echo http://mirrors.tuna.tsinghua.edu.cn/alpine/v3.18/main > /etc/apk/repositories && \
+    echo http://mirrors.tuna.tsinghua.edu.cn/alpine/v3.18/community >> /etc/apk/repositories && \
+    apk add -X http://mirrors.tuna.tsinghua.edu.cn/alpine/v3.18/main -u alpine-keys --allow-untrusted && \
+    apk update && apk upgrade
+
+RUN apk add --no-cache m4 autoconf make gcc g++ linux-headers wget zlib-dev git libxml2 libxml2-dev oniguruma oniguruma-dev && \
+    apk add --no-cache bash strace su-exec && \
+    apk add --no-cache curl curl-dev libzip-dev openssl && \
+    apk add --no-cache libpng libpng-dev libjpeg-turbo-dev libwebp-dev libxpm-dev gd vim freetype freetype-dev && \
+    apk add --no-cache --update py3-pip py3-flask py3-gunicorn py3-gevent
+
+
+RUN pip --version && \
+    pip3 --version
+
+RUN pip3 config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
+
+VOLUME /pdf/tmp
+WORKDIR /pdf
+
+COPY docker-entrypoint.sh /usr/local/bin/
+EXPOSE 9022
+RUN ["chmod", "+x", "/usr/local/bin/docker-entrypoint.sh"]
+ENTRYPOINT ["/bin/sh", "/usr/local/bin/docker-entrypoint.sh"]
