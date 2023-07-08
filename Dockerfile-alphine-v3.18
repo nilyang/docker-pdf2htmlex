@@ -1,4 +1,4 @@
-FROM nilyang/pdf2htmlex:latest
+FROM nilyang/pdf2htmlex:latesthttps://github.com/nilyang/docker-pdf2htmlex/blob/master/Dockerfile-alphine-v3.18
 
 RUN \
     echo http://mirrors.tuna.tsinghua.edu.cn/alpine/v3.18/main > /etc/apk/repositories && \
@@ -12,9 +12,6 @@ RUN apk add --no-cache m4 autoconf make gcc g++ linux-headers wget zlib-dev git 
     apk add --no-cache libpng libpng-dev libjpeg-turbo-dev libwebp-dev libxpm-dev gd vim freetype freetype-dev && \
     apk add --no-cache --update py3-pip py3-flask py3-gunicorn py3-gevent
 
-
-RUN pip --version && \
-    pip3 --version
 
 RUN pip3 config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
 
